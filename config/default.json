@@ -1,3 +1,4 @@
 {
-  "mongoURI": "mongodb+srv://Jason:Jason@devconnecter-bvder.mongodb.net/test?retryWrites=true"
+  "mongoURI": "mongodb+srv://Jason:Jason@devconnecter-bvder.mongodb.net/test?retryWrites=true",
+  "jwtSecret": "supersecrettoken"
 }

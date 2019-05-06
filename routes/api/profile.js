@@ -3,7 +3,7 @@ const router = express.Router();
 // add this to make a protected route
 const auth = require("../../middleware/auth");
 const Profile = require("../../models/Profile");
-const USer = require("../../models/User");
+const User = require("../../models/User");
 const { check, validationResult } = require("express-validator/check");
 
 // @route GET api/profile/me
@@ -120,6 +120,22 @@ router.get("/user/:user_id", async (req, res) => {
     if (error.kind === "ObjectId") {
       return res.status(400).json({ msg: "Profile not found."});
     }
+    res.status(500).send("Server Error");
+  }
+});
+
+// @route delete api/profile
+// description: delete profile, user, and post
+// access value: private
+router.delete("/", auth, async (req, res) => {
+  try {
+    // remove profile
+    await Profile.findOneAndRemove({ user: req.user.id });
+    await User.findOneAndRemove({ _id: req.user.id });
+    res.json({ msg: "User deleted."});
+
+  } catch (error) {
+    console.error(error.message);
     res.status(500).send("Server Error");
   }
 });

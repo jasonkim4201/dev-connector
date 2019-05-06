@@ -1,6 +1,3 @@
 {
-  "mongoURI": "mongodb+srv://Jason:Jason@devconnecter-bvder.mongodb.net/test?retryWrites=true",
-  "jwtSecret": "supersecrettoken",
-  "githubClientId": "b870821266214dfb4f96",
-  "githubSecret": "6e5eca18092b981c85856f36641aa7e994d78c63"
+  
 }

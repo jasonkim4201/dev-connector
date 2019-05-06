@@ -165,7 +165,7 @@ router.put("/experience", [auth, [
   };
 
   try {
-    const profile = await Profile.findOne({ user: req.user.id});
+    const profile = await Profile.findOne({ user: req.user.id });
     
     // unshift makes it so newest are first
     
@@ -179,5 +179,86 @@ router.put("/experience", [auth, [
   
 });
 
+// @route delete api/profile/experience/:exp_id
+// description: delete experience from profile
+// access value: private
+
+router.delete("/experience/:exp_id", auth, async (req, res) => {
+  try {
+    const profile = await Profile.findOne({ user: req.user.id });
+
+    // get remove index
+    const removeIndex = profile.experience.map(item => item.id).indexOf(req.params.exp_id);
+    profile.experience.splice(removeIndex, 1);
+
+    await profile.save();
+    res.json(profile);
+    
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+// @route put api/profile/education
+// description: add profile experience
+// access value: private
+
+router.put("/education", [auth, [
+  check("school", "School is required").not().isEmpty(),
+  check("degree", "Degree is required").not().isEmpty(),
+  check("fieldofstudy", "Field of study is required").not().isEmpty(),
+  check("from", "from date is requited").not().isEmpty()
+]
+], async (req, res) => {
+const errors = validationResult(req);
+
+if (!errors.isEmpty()) {
+  return res.status(400).json({ errors: errors.array() });
+}
+
+const {
+  school, degree, fieldofstudy, from, to, current, description
+} = req.body;
+
+const newEdu = {
+  school, degree, fieldofstudy, from, to, current, description 
+};
+
+try {
+  const profile = await Profile.findOne({ user: req.user.id });
+  
+  // unshift makes it so newest are first
+  
+  profile.education.unshift(newEdu);
+  await profile.save();
+  res.json(profile);
+} catch (error) {
+  console.error(error.message);
+  res.status(500).send("Server Error");  
+}
+
+});
+
+// @route delete api/profile/education/:edu_id
+// description: delete education from profile
+// access value: private
+
+router.delete("/education/:edu_id", auth, async (req, res) => {
+try {
+  const profile = await Profile.findOne({ user: req.user.id });
+
+  // get remove index
+  const removeIndex = profile.education.map(item => item.id).indexOf(req.params.edu_id);
+  profile.education.splice(removeIndex, 1);
+
+  await profile.save();
+  res.json(profile);
+  
+} catch (error) {
+  console.error(error.message);
+  res.status(500).send("Server Error");
+}
+});
 
 module.exports = router;

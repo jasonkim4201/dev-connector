@@ -41,7 +41,7 @@ const EditProfile = ({ profile: {profile, loading}, createProfile, getCurrentPro
       instagram: loading || !profile.social ? "" : profile.social.instagram,
     });
 
-  }, [loading]); // prop to depend on loading
+  }, [loading, getCurrentProfile]); // prop to depend on loading
 
   const {
     company,

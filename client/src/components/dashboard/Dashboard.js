@@ -17,7 +17,7 @@ const Dashboard = ({
   // reminder that i need the brackets because i only need this to run once
   useEffect(() => {
     getCurrentProfile()
-  }, []);
+  }, [getCurrentProfile]);
 
   return (
     loading && profile === null ? <Spinner /> : <Fragment>
